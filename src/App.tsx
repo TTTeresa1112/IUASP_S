@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Filter, Check, Bell, Eye, EyeOff, AlertCircle, Clock, FileCheck, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import ManuscriptDetail from './components/ManuscriptDetail';
 
-type Stage = '初审' | '同行评议' | '归档' | '后处理';
+type Stage = '初审' | 'In Process' | '归档' | '后处理';
 type RoleView = 'ME' | 'EIC' | 'AE' | 'RE' | 'AU' | 'LIST';
 
 interface Manuscript {
@@ -33,20 +33,20 @@ const meMockData: Manuscript[] = [
   { id: 'MS-2026-0110', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Pending ME Initial Check', reviewers: '- / -', comments: 0, revision: 'R0', status: 'AE Initial Check', stage: '初审', unreadComments: 1, unreadType: 'AE消息' },
   { id: 'MS-2026-0111', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Send Back to Author(s)', reviewers: '- / -', comments: 1, revision: 'R1', status: 'Author(s) Revise', stage: '初审' },
   
-  // 同行评议 (Peer Review)
-  { id: 'MS-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: '0 / 0', revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议', unreadComments: 1, unreadType: 'RE消息' },
-  { id: 'MS-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: 'Pending Reviewer(s) Check', reviewers: '1 / 10', comments: '1 / 3', revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议', unreadComments: 1, unreadType: 'RE消息' },
-  { id: 'MS-2026-0072', journal: 'JAMA', title: 'AI in diagnostic radiology', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议', unreadComments: 3, unreadType: 'RE消息' },
-  { id: 'MS-2026-0073', journal: 'Nature Medicine', title: 'mRNA vaccine efficacy across variants', subStatus: 'Pending AE Recommendation', reviewers: '5 / 20', comments: '3 / 5', revision: 'R0', status: 'AE Recommendation', stage: '同行评议' },
-  { id: 'MS-2026-0069', journal: 'Nature', title: 'Climate change models on biodiversity', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'AE Recommendation', stage: '同行评议', unreadComments: 1, unreadType: 'AE消息' },
-  { id: 'MS-2026-0064', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'ME Decision', stage: '同行评议', unreadComments: 1, unreadType: '稿件消息' },
-  { id: 'MS-2026-0065', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Decision', stage: '同行评议' },
-  { id: 'MS-2026-0060', journal: 'Nature', title: 'Quantum error correction protocols', subStatus: 'Pending EIC Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'EIC Decision', stage: '同行评议' },
-  { id: 'MS-2026-0061', journal: 'Science', title: 'Dark matter detection algorithms', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: '同行评议', unreadComments: 1, unreadType: 'EIC消息' },
-  { id: 'MS-2026-0062', journal: 'Cell', title: 'CRISPR base editing in vivo', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: '同行评议' },
-  { id: 'MS-2026-0059', journal: 'JAMA', title: 'Author revision on deep learning', subStatus: 'Send Back to Author(s)', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: '同行评议' },
-  { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Pre-Acceptance', stage: '同行评议' },
+  // In Process (Peer Review)
+  { id: 'MS-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: '0 / 0', revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process', unreadComments: 1, unreadType: 'RE消息' },
+  { id: 'MS-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: 'Pending Reviewer(s) Check', reviewers: '1 / 10', comments: '1 / 3', revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process', unreadComments: 1, unreadType: 'RE消息' },
+  { id: 'MS-2026-0072', journal: 'JAMA', title: 'AI in diagnostic radiology', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process', unreadComments: 3, unreadType: 'RE消息' },
+  { id: 'MS-2026-0073', journal: 'Nature Medicine', title: 'mRNA vaccine efficacy across variants', subStatus: 'Pending AE Recommendation', reviewers: '5 / 20', comments: '3 / 5', revision: 'R0', status: 'AE Recommendation', stage: 'In Process' },
+  { id: 'MS-2026-0069', journal: 'Nature', title: 'Climate change models on biodiversity', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'AE Recommendation', stage: 'In Process', unreadComments: 1, unreadType: 'AE消息' },
+  { id: 'MS-2026-0064', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'ME Decision', stage: 'In Process', unreadComments: 1, unreadType: '稿件消息' },
+  { id: 'MS-2026-0065', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Decision', stage: 'In Process' },
+  { id: 'MS-2026-0060', journal: 'Nature', title: 'Quantum error correction protocols', subStatus: 'Pending EIC Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'EIC Decision', stage: 'In Process' },
+  { id: 'MS-2026-0061', journal: 'Science', title: 'Dark matter detection algorithms', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: 'In Process', unreadComments: 1, unreadType: 'EIC消息' },
+  { id: 'MS-2026-0062', journal: 'Cell', title: 'CRISPR base editing in vivo', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: 'In Process' },
+  { id: 'MS-2026-0059', journal: 'JAMA', title: 'Author revision on deep learning', subStatus: 'Send Back to Author(s)', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: 'In Process' },
+  { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Pre-Acceptance', stage: 'In Process' },
 
   // 归档 (Archiving)
   { id: 'MS-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Accepted', reviewers: '3 / 3', comments: 3, revision: 'R3', status: 'Accepted', stage: '归档' },
@@ -64,13 +64,13 @@ const auMockData: Manuscript[] = [
   { id: 'MS-2026-0101', journal: 'Nature', title: 'Quantum Computing Advancements in AGI', subStatus: 'Pending Editor Initial Check', reviewers: '- / -', comments: 0, revision: 'R0', status: 'Editor Initial Check', stage: '初审' },
   { id: 'MS-2026-0102', journal: 'Science', title: 'CRISPR-Cas9 off-target effects mitigation', subStatus: 'Send Back to Author(s)', reviewers: '- / -', comments: 1, revision: 'R1', status: 'Author(s) Revise', stage: '初审', unreadComments: 1, unreadType: '编辑部消息' },
   
-  // 同行评议 (Peer Review)
-  { id: 'MS-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: 0, revision: 'R0', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: 0, revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: 'Pending Reviewer(s) Check', reviewers: '5 / 20', comments: 3, revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0072', journal: 'JAMA', title: 'AI in diagnostic radiology', subStatus: 'Pending Editor Decision', reviewers: '5 / 20', comments: 3, revision: 'R1', status: 'Editor Decision', stage: '同行评议' },
-  { id: 'MS-2026-0059', journal: 'Nature', title: 'Author revision on deep learning', subStatus: 'Send Back to Author(s)', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: '同行评议', unreadComments: 1, unreadType: '编辑部消息' },
-  { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending Editor Decision', reviewers: '5 / 20', comments: 3, revision: 'R2', status: 'ME Pre-Acceptance', stage: '同行评议' },
+  // In Process (Peer Review)
+  { id: 'MS-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: 0, revision: 'R0', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: 0, revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: 'Pending Reviewer(s) Check', reviewers: '5 / 20', comments: 3, revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0072', journal: 'JAMA', title: 'AI in diagnostic radiology', subStatus: 'Pending Editor Decision', reviewers: '5 / 20', comments: 3, revision: 'R1', status: 'Editor Decision', stage: 'In Process' },
+  { id: 'MS-2026-0059', journal: 'Nature', title: 'Author revision on deep learning', subStatus: 'Send Back to Author(s)', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: 'In Process', unreadComments: 1, unreadType: '编辑部消息' },
+  { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending Editor Decision', reviewers: '5 / 20', comments: 3, revision: 'R2', status: 'ME Pre-Acceptance', stage: 'In Process' },
 
   // 归档 (Archiving)
   { id: 'MS-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Accept', reviewers: '3 / 3', comments: 3, revision: 'R3', status: 'Accept', stage: '归档' },
@@ -84,32 +84,33 @@ const auMockData: Manuscript[] = [
 ];
 
 const reMockData: Manuscript[] = [
-  // 同行评议 (Peer Review)
-  { id: 'REV-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Under Review', stage: '同行评议', reInvitationStatus: 'Pending' },
-  { id: 'REV-2026-0086', journal: 'Nature', title: 'Climate change impact on marine biodiversity', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Under Review', stage: '同行评议', reInvitationStatus: 'Accepted' },
-  { id: 'REV-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Under Review', stage: '同行评议', reInvitationStatus: 'Pending' },
-  { id: 'REV-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Under Review', stage: '同行评议', reInvitationStatus: 'Accepted' },
+  // In Process (Peer Review)
+  { id: 'REV-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Pending Peer Review', stage: 'In Process', reInvitationStatus: 'Pending' },
+  { id: 'REV-2026-0086', journal: 'Nature', title: 'Climate change impact on marine biodiversity', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Pending Peer Review', stage: 'In Process', reInvitationStatus: 'Accepted' },
+  { id: 'REV-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Pending Peer Review', stage: 'In Process', reInvitationStatus: 'Pending' },
+  { id: 'REV-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Pending Peer Review', stage: 'In Process', reInvitationStatus: 'Accepted' },
 
   // 归档 (Archiving)
   { id: 'REV-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: '', reviewers: '', comments: 0, revision: 'R3', status: 'Done', stage: '归档', reInvitationStatus: 'Accepted' },
-  { id: 'REV-2025-1088', journal: 'Nature', title: 'Deep learning for protein folding', subStatus: '', reviewers: '', comments: 0, revision: 'R0', status: 'Cancelled', stage: '归档', reInvitationStatus: 'Accepted' },
+  { id: 'REV-2025-1088', journal: 'Nature', title: 'Deep learning for protein folding', subStatus: '', reviewers: '', comments: 0, revision: 'R0', status: 'Declined', stage: '归档', reInvitationStatus: 'Accepted' },
+  { id: 'REV-2025-1050', journal: 'Cell', title: 'Expired review invitation test', subStatus: '', reviewers: '', comments: 0, revision: 'R1', status: 'Expired', stage: '归档', reInvitationStatus: 'Accepted' },
 ];
 
 const meTabs: { name: Stage; count: number }[] = [
   { name: '初审', count: 12 },
-  { name: '同行评议', count: 45 },
+  { name: 'In Process', count: 45 },
   { name: '归档', count: 128 },
   { name: '后处理', count: 3 },
 ];
 
 const reTabs: { name: Stage; count: number }[] = [
-  { name: '同行评议', count: 8 },
+  { name: 'In Process', count: 8 },
   { name: '归档', count: 2 },
 ];
 
 const auTabs: { name: Stage; count: number }[] = [
   { name: '初审', count: 12 },
-  { name: '同行评议', count: 45 },
+  { name: 'In Process', count: 45 },
   { name: '归档', count: 128 },
 ];
 
@@ -128,27 +129,27 @@ const eicMockData: Manuscript[] = [
   
   { id: 'MS-2026-0111', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Send Back to Author(s)', reviewers: '- / -', comments: 1, revision: 'R1', status: 'Author(s) Revise', stage: '初审' },
 
-  // 同行评议 (Peer Review) - EIC View Specific
-  { id: 'MS-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: '0 / 0', revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: 'Pending Reviewer(s) Check', reviewers: '1 / 10', comments: '1 / 3', revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0072', journal: 'JAMA', title: 'AI in diagnostic radiology', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Reviewer(s) Check', stage: '同行评议' },
+  // In Process (Peer Review) - EIC View Specific
+  { id: 'MS-2026-0085', journal: 'Cell', title: 'Novel metabolic pathways in T-cells', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0087', journal: 'Science', title: 'Deep learning for protein folding', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: '0 / 0', revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0088', journal: 'Lancet', title: 'Long COVID epidemiological study', subStatus: 'Pending Reviewer(s) Check', reviewers: '1 / 10', comments: '1 / 3', revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0072', journal: 'JAMA', title: 'AI in diagnostic radiology', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Reviewer(s) Check', stage: 'In Process' },
   
-  { id: 'MS-2026-0073', journal: 'Nature Medicine', title: 'mRNA vaccine efficacy across variants', subStatus: 'Pending AE Recommendation', reviewers: '5 / 20', comments: '3 / 5', revision: 'R0', status: 'AE Recommendation', stage: '同行评议' },
-  { id: 'MS-2026-0069', journal: 'Nature', title: 'Climate change models on biodiversity', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'AE Recommendation', stage: '同行评议' },
+  { id: 'MS-2026-0073', journal: 'Nature Medicine', title: 'mRNA vaccine efficacy across variants', subStatus: 'Pending AE Recommendation', reviewers: '5 / 20', comments: '3 / 5', revision: 'R0', status: 'AE Recommendation', stage: 'In Process' },
+  { id: 'MS-2026-0069', journal: 'Nature', title: 'Climate change models on biodiversity', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'AE Recommendation', stage: 'In Process' },
   
-  { id: 'MS-2026-0064', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'ME Decision', stage: '同行评议' },
-  { id: 'MS-2026-0065', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Decision', stage: '同行评议' },
+  { id: 'MS-2026-0064', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'ME Decision', stage: 'In Process' },
+  { id: 'MS-2026-0065', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Decision', stage: 'In Process' },
   
-  { id: 'MS-2026-0060', journal: 'Nature', title: 'Quantum error correction protocols', subStatus: 'Pending EIC Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'EIC Decision', stage: '同行评议', unreadComments: 1, unreadType: 'ME消息' },
-  { id: 'MS-2026-0061', journal: 'Science', title: 'Dark matter detection algorithms', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: '同行评议' },
-  { id: 'MS-2026-0062', journal: 'Cell', title: 'CRISPR base editing in vivo', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: '同行评议' },
+  { id: 'MS-2026-0060', journal: 'Nature', title: 'Quantum error correction protocols', subStatus: 'Pending EIC Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'EIC Decision', stage: 'In Process', unreadComments: 1, unreadType: 'ME消息' },
+  { id: 'MS-2026-0061', journal: 'Science', title: 'Dark matter detection algorithms', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: 'In Process' },
+  { id: 'MS-2026-0062', journal: 'Cell', title: 'CRISPR base editing in vivo', subStatus: 'Pending AE Acceptance', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'EIC Decision', stage: 'In Process' },
   
-  { id: 'MS-2026-0059', journal: 'JAMA', title: 'Author revision on deep learning', subStatus: 'Send Back to Author(s)', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: '同行评议' },
-  { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Pre-Acceptance', stage: '同行评议' },
+  { id: 'MS-2026-0059', journal: 'JAMA', title: 'Author revision on deep learning', subStatus: 'Send Back to Author(s)', reviewers: '5 / 20', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: 'In Process' },
+  { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Pre-Acceptance', stage: 'In Process' },
 
   // Other stages copied from ME for fallback
-  ...meMockData.filter(item => item.stage !== '初审' && item.stage !== '同行评议')
+  ...meMockData.filter(item => item.stage !== '初审' && item.stage !== 'In Process')
 ];
 const aeMockData: Manuscript[] = [
   // 初审 (Primary Review) - AE View Specific
@@ -166,32 +167,32 @@ const aeMockData: Manuscript[] = [
   // Author(s) Revise
   { id: 'MS-2026-0206', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Send Back to Author(s)', reviewers: '- / -', comments: 1, revision: 'R1', status: 'Author(s) Revise', stage: '初审' },
 
-  // 同行评议 (Peer Review) - AE View Specific
+  // In Process (Peer Review) - AE View Specific
   // Reviewer(s) Check
-  { id: 'MS-2026-0211', journal: 'Nature', title: 'Quantum Computing Peer Review', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0212', journal: 'Cell', title: 'Epigenetic clocks check', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0213', journal: 'Nature Medicine', title: 'mRNA vaccines check', subStatus: 'Pending Reviewer(s) Check', reviewers: '2 / 10', comments: '1 / 2', revision: 'R0', status: 'Reviewer(s) Check', stage: '同行评议' },
-  { id: 'MS-2026-0214', journal: 'JAMA', title: 'AI radiology check', subStatus: 'Pending AE Acceptance', reviewers: '5 / 10', comments: '2 / 5', revision: 'R0', status: 'Reviewer(s) Check', stage: '同行评议', unreadComments: 3, unreadType: 'RE消息' },
+  { id: 'MS-2026-0211', journal: 'Nature', title: 'Quantum Computing Peer Review', subStatus: 'Pending Reviewer(s) Invitation', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0212', journal: 'Cell', title: 'Epigenetic clocks check', subStatus: 'Pending Reviewer(s) Acceptance', reviewers: '0 / 10', comments: '0 / 0', revision: 'R0', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0213', journal: 'Nature Medicine', title: 'mRNA vaccines check', subStatus: 'Pending Reviewer(s) Check', reviewers: '2 / 10', comments: '1 / 2', revision: 'R0', status: 'Reviewer(s) Check', stage: 'In Process' },
+  { id: 'MS-2026-0214', journal: 'JAMA', title: 'AI radiology check', subStatus: 'Pending AE Acceptance', reviewers: '5 / 10', comments: '2 / 5', revision: 'R0', status: 'Reviewer(s) Check', stage: 'In Process', unreadComments: 3, unreadType: 'RE消息' },
 
   // AE Recommendation
-  { id: 'MS-2026-0215', journal: 'Science', title: 'Deep learning protein recommendation', subStatus: 'Pending AE Recommendation', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'AE Recommendation', stage: '同行评议' },
-  { id: 'MS-2026-0216', journal: 'Lancet', title: 'Long COVID recommendation', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'AE Recommendation', stage: '同行评议' },
+  { id: 'MS-2026-0215', journal: 'Science', title: 'Deep learning protein recommendation', subStatus: 'Pending AE Recommendation', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'AE Recommendation', stage: 'In Process' },
+  { id: 'MS-2026-0216', journal: 'Lancet', title: 'Long COVID recommendation', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'AE Recommendation', stage: 'In Process' },
 
   // ME Decision
-  { id: 'MS-2026-0217', journal: 'Cell Reports', title: 'Metabolic pathways decision', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'ME Decision', stage: '同行评议' },
-  { id: 'MS-2026-0218', journal: 'Nature', title: 'Climate models decision', subStatus: 'Pending AE Acceptance', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'ME Decision', stage: '同行评议', unreadComments: 1, unreadType: 'ME消息' },
+  { id: 'MS-2026-0217', journal: 'Cell Reports', title: 'Metabolic pathways decision', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'ME Decision', stage: 'In Process' },
+  { id: 'MS-2026-0218', journal: 'Nature', title: 'Climate models decision', subStatus: 'Pending AE Acceptance', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'ME Decision', stage: 'In Process', unreadComments: 1, unreadType: 'ME消息' },
 
   // EIC Decision
-  { id: 'MS-2026-0219', journal: 'BMJ', title: 'Mortality impact decision', subStatus: 'Pending EIC Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'EIC Decision', stage: '同行评议' },
-  { id: 'MS-2026-0220', journal: 'Science', title: 'Dark matter decision', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'EIC Decision', stage: '同行评议' },
-  { id: 'MS-2026-0221', journal: 'Cell', title: 'CRISPR base editing acceptance', subStatus: 'Pending AE Acceptance', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'EIC Decision', stage: '同行评议', unreadComments: 1, unreadType: 'EIC消息' },
+  { id: 'MS-2026-0219', journal: 'BMJ', title: 'Mortality impact decision', subStatus: 'Pending EIC Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'EIC Decision', stage: 'In Process' },
+  { id: 'MS-2026-0220', journal: 'Science', title: 'Dark matter decision', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'EIC Decision', stage: 'In Process' },
+  { id: 'MS-2026-0221', journal: 'Cell', title: 'CRISPR base editing acceptance', subStatus: 'Pending AE Acceptance', reviewers: '5 / 10', comments: '5 / 5', revision: 'R0', status: 'EIC Decision', stage: 'In Process', unreadComments: 1, unreadType: 'EIC消息' },
 
   // Author(s) Revise and ME Pre-Acceptance
-  { id: 'MS-2026-0222', journal: 'Lancet', title: 'New treatment revise', subStatus: 'Send Back to Author(s)', reviewers: '5 / 10', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: '同行评议' },
-  { id: 'MS-2026-0223', journal: 'Nature Medicine', title: 'Vaccine pre-acceptance', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R1', status: 'ME Pre-Acceptance', stage: '同行评议' },
+  { id: 'MS-2026-0222', journal: 'Lancet', title: 'New treatment revise', subStatus: 'Send Back to Author(s)', reviewers: '5 / 10', comments: '3 / 5', revision: 'R1', status: 'Author(s) Revise', stage: 'In Process' },
+  { id: 'MS-2026-0223', journal: 'Nature Medicine', title: 'Vaccine pre-acceptance', subStatus: 'Pending ME Decision', reviewers: '5 / 10', comments: '5 / 5', revision: 'R1', status: 'ME Pre-Acceptance', stage: 'In Process' },
 
   // Other stages copied from ME for fallback
-  ...meMockData.filter(item => item.stage !== '初审' && item.stage !== '同行评议')
+  ...meMockData.filter(item => item.stage !== '初审' && item.stage !== 'In Process')
 ];
 
 const eicTabs: { name: Stage; count: number }[] = JSON.parse(JSON.stringify(meTabs));
@@ -217,7 +218,7 @@ export default function App() {
       setShowSimpleList(false);
     }
     if (role === 'RE' && (activeTab === '初审' || activeTab === '后处理')) {
-      setActiveTab('同行评议');
+      setActiveTab('In Process');
     }
   };
 
@@ -251,7 +252,7 @@ export default function App() {
       if (item.stage === '初审') {
         return s === 'pending eic acceptance' || s === 'pending eic initial check';
       }
-      if (item.stage === '同行评议') {
+      if (item.stage === 'In Process') {
         return s === 'pending eic decision';
       }
     }
@@ -259,7 +260,7 @@ export default function App() {
       if (item.stage === '初审') {
         return s === 'pending ae acceptance' || s === 'pending ae initial check';
       }
-      if (item.stage === '同行评议') {
+      if (item.stage === 'In Process') {
         return (
           s === 'pending ae acceptance' ||
           s === 'pending reviewer(s) invitation' ||
@@ -268,7 +269,7 @@ export default function App() {
       }
     }
     if (effectiveRole === 'RE') {
-      if (item.stage === '同行评议') {
+      if (item.stage === 'In Process') {
         return item.reInvitationStatus === 'Pending' || item.reInvitationStatus === 'Accepted';
       }
     }
@@ -452,7 +453,7 @@ export default function App() {
 
                const stageLabels: Record<Stage, string> = {
                  '初审': '正在初步审查中',
-                 '同行评议': '专家正在评审',
+                 'In Process': '专家正在评审',
                  '归档': '流程已结束',
                  '后处理': '出版后续处理',
                };
@@ -485,7 +486,7 @@ export default function App() {
 
                    {/* ===== 阶段标签（大号） ===== */}
                    <div className="flex gap-3 flex-wrap">
-                     {(['初审', '同行评议', '归档', '后处理'] as Stage[]).map(stage => {
+                     {(['初审', 'In Process', '归档', '后处理'] as Stage[]).map(stage => {
                        const count = meMockData.filter(m => m.stage === stage).length;
                        const isActive = activeTab === stage;
                        const todoCount = meMockData.filter(m => m.stage === stage && isTodo(m, 'ME')).length;
@@ -622,7 +623,7 @@ export default function App() {
             <div className="space-y-6">
             {/* Top Stage Summary Bar */}
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-              {(['初审', '同行评议', '归档'] as Stage[]).map(stage => {
+              {(['初审', 'In Process', '归档'] as Stage[]).map(stage => {
                 const stageData = meMockData.filter(m => m.stage === stage);
                 const todoCount = stageData.filter(m => isTodo(m, 'ME')).length;
                 return (
@@ -644,7 +645,7 @@ export default function App() {
 
             {/* Workflow Dashboard */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-              {(['初审', '同行评议', '归档'] as Stage[]).map((stage) => {
+              {(['初审', 'In Process', '归档'] as Stage[]).map((stage) => {
                 const stageData = meMockData.filter(m => m.stage === stage);
                 const statuses = Array.from(new Set(stageData.map(m => m.status)));
                 
@@ -773,12 +774,12 @@ export default function App() {
                     <th className="px-4 py-3.5 w-full min-w-[300px]">标题</th>
                     <th className="px-4 py-3.5 w-[140px]">
                       <div className="flex items-center gap-1.5 relative z-20">
-                        稿件状态
+                        主状态
                         <div>
                           <button 
                             onClick={() => setOpenFilter(openFilter === 'status' ? null : 'status')}
                             className={`p-1 rounded hover:bg-[#e2e8f0] transition-colors ${statusFilter ? 'text-[#2563eb]' : 'text-[#94a3b8]'}`}
-                            title="筛选稿件状态"
+                            title="筛选主状态"
                           >
                             <Filter size={14} />
                           </button>
@@ -821,7 +822,7 @@ export default function App() {
                     )}
                     <th className="px-4 py-3.5 w-[140px]">
                       <div className="flex items-center gap-1.5 relative z-20">
-                        状态
+                        子状态
                         <div>
                           <button 
                             onClick={() => setOpenFilter(openFilter === 'subStatus' ? null : 'subStatus')}
@@ -872,7 +873,7 @@ export default function App() {
                     )}
                     <th className="px-4 py-3.5 w-[140px]">
                       <div className="flex items-center gap-1.5 relative z-20">
-                        状态
+                        子状态
                         <div>
                           <button 
                             onClick={() => setOpenFilter(openFilter === 'subStatus' ? null : 'subStatus')}
@@ -915,7 +916,7 @@ export default function App() {
                     )}
                     <th className="px-4 py-3.5 w-[140px]">
                       <div className="flex items-center gap-1.5 relative z-20">
-                        状态
+                        子状态
                         <div>
                           <button 
                             onClick={() => setOpenFilter(openFilter === 'status' ? null : 'status')}
@@ -955,7 +956,7 @@ export default function App() {
                 {filteredData.length > 0 ? (
                   filteredData.map((row) => {
                     if (['ME', 'EIC', 'AE'].includes(roleView)) {
-                      // Helper for 状态 (Status), categorized by processing Role or end state
+                      // Helper for 子状态 (Status), categorized by processing Role or end state
                       const getRoleStatusColor = (status: string) => {
                         const s = status.toUpperCase();
                         if (s.includes('ME ') || s === 'ME' || s === 'ME 预接收') return 'bg-[#f3e8ff] text-[#7e22ce]'; // Purple for ME
@@ -969,7 +970,7 @@ export default function App() {
                         return 'bg-[#e2e8f0] text-[#475569]'; // Default Gray
                       };
 
-                      // Helper for 稿件状态 (subStatus), using a dot and text to differentiate visually from the solid pills
+                      // Helper for 主状态 (subStatus), using a dot and text to differentiate visually from the solid pills
                       const getSubStatusIndicator = (subStatus: string) => {
                         const s = subStatus.toLowerCase();
                         let dotClass = 'bg-[#94a3b8]'; // Default Gray
@@ -1013,7 +1014,7 @@ export default function App() {
                             );
                           }
 
-                          if ((s === 'pending eic initial check' && activeTab === '初审') || (s === 'pending eic decision' && activeTab === '同行评议')) {
+                          if ((s === 'pending eic initial check' && activeTab === '初审') || (s === 'pending eic decision' && activeTab === 'In Process')) {
                             return (
                               <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-1.5 bg-[#f0f9ff] border border-[#bae6fd] px-2 py-0.5 rounded text-[#0369a1] font-bold text-[10px]">
@@ -1027,7 +1028,7 @@ export default function App() {
 
                         // AE View logic
                         if (roleView === 'AE') {
-                          if (s === 'pending ae acceptance' && (activeTab === '初审' || activeTab === '同行评议')) {
+                          if (s === 'pending ae acceptance' && (activeTab === '初审' || activeTab === 'In Process')) {
                             return (
                               <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-1.5 bg-[#fef2f2] border border-[#fecaca] px-2 py-0.5 rounded text-[#b91c1c] font-bold text-[10px] animate-pulse">
@@ -1039,7 +1040,7 @@ export default function App() {
                           }
 
                           if ((s === 'pending ae initial check' && activeTab === '初审') || 
-                              ((s === 'pending reviewer(s) invitation' || s === 'pending ae recommendation') && activeTab === '同行评议')) {
+                              ((s === 'pending reviewer(s) invitation' || s === 'pending ae recommendation') && activeTab === 'In Process')) {
                             return (
                               <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-1.5 bg-[#f0f9ff] border border-[#bae6fd] px-2 py-0.5 rounded text-[#0369a1] font-bold text-[10px]">
@@ -1084,33 +1085,9 @@ export default function App() {
                             {row.title}
                           </td>
                           <td className="px-4 py-3.5 align-middle">
-                            {activeTab === '归档' ? (
-                              (() => {
-                                const s = row.status.toUpperCase();
-                                let dotClass = 'bg-[#94a3b8]';
-                                let textClass = 'text-[#475569]';
-                                if (s.includes('ACCEPT')) {
-                                  dotClass = 'bg-[#22c55e]';
-                                  textClass = 'text-[#166534]';
-                                } else if (s.includes('REJECT') || s.includes('RETRACTION') || s.includes('WITHDRAW')) {
-                                  dotClass = 'bg-[#ef4444]';
-                                  textClass = 'text-[#991b1b]';
-                                } else if (s.includes('CORRECTION')) {
-                                  dotClass = 'bg-[#f59e0b]';
-                                  textClass = 'text-[#b45309]';
-                                }
-                                return (
-                                  <div className="flex items-center gap-1.5">
-                                    <span className={`w-1.5 h-1.5 rounded-full ${dotClass} shrink-0`}></span>
-                                    <span className={`font-medium text-[12px] whitespace-nowrap ${textClass}`}>{row.status}</span>
-                                  </div>
-                                );
-                              })()
-                            ) : (
-                              <span className={`px-2.5 py-1 rounded text-[12px] font-medium inline-block whitespace-nowrap ${getRoleStatusColor(row.status)}`}>
-                                {row.status}
-                              </span>
-                            )}
+                            <span className={`px-2.5 py-1 rounded text-[12px] font-medium inline-block whitespace-nowrap ${getRoleStatusColor(row.status)}`}>
+                              {row.status}
+                            </span>
                           </td>
                           {activeTab !== '初审' && activeTab !== '归档' && (
                             <>
@@ -1171,7 +1148,7 @@ export default function App() {
                         return 'bg-[#e2e8f0] text-[#475569]'; // Default Gray
                       };
 
-                      // Helper for 稿件状态 (subStatus), using a dot and text to differentiate visually from the solid pills
+                      // Helper for 主状态 (subStatus), using a dot and text to differentiate visually from the solid pills
                       const getSubStatusIndicator = (subStatus: string) => {
                         const s = subStatus.toLowerCase();
                         let dotClass = 'bg-[#94a3b8]'; // Default Gray
@@ -1293,7 +1270,7 @@ export default function App() {
                             {renderREStatus(row.status)}
                           </td>
                           <td className="px-4 py-3.5 align-middle">
-                            {row.stage === '同行评议' ? (
+                            {row.stage === 'In Process' ? (
                               row.reInvitationStatus === 'Pending' ? (
                                 <div className="flex items-center gap-3">
                                   <div className="flex items-center gap-1.5 bg-[#fef2f2] border border-[#fecaca] px-2 py-1 rounded text-[#991b1b] font-medium text-[12px]">

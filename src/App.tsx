@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Filter, Check, Bell, Eye, EyeOff, AlertCircle, Clock, FileCheck, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import ManuscriptDetail from './components/ManuscriptDetail';
 
-type Stage = '初审' | '同行评议' | '归档' | '出版后处理';
+type Stage = '初审' | '同行评议' | '归档' | '后处理';
 type RoleView = 'ME' | 'EIC' | 'AE' | 'RE' | 'AU' | 'LIST';
 
 interface Manuscript {
@@ -49,15 +49,14 @@ const meMockData: Manuscript[] = [
   { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending ME Decision', reviewers: '5 / 20', comments: '3 / 5', revision: 'R2', status: 'ME Pre-Acceptance', stage: '同行评议' },
 
   // 归档 (Archiving)
-  { id: 'MS-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: '已接收', reviewers: '3 / 3', comments: 3, revision: 'R3', status: 'Accept', stage: '归档' },
-  { id: 'MS-2025-1088', journal: 'Nature', title: 'Deep learning for protein folding', subStatus: '已拒稿', reviewers: '2 / 2', comments: 2, revision: 'R0', status: 'Reject', stage: '归档' },
-  { id: 'MS-2025-1045', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: '已撤稿', reviewers: '1 / 3', comments: 0, revision: 'R1', status: 'Retraction', stage: '归档' },
-  { id: 'MS-2025-0991', journal: 'Lancet', title: 'Global burden of cardiovascular diseases', subStatus: '已出版', reviewers: '4 / 4', comments: 5, revision: 'R2', status: 'Accept', stage: '归档' },
+  { id: 'MS-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Accepted', reviewers: '3 / 3', comments: 3, revision: 'R3', status: 'Accepted', stage: '归档' },
+  { id: 'MS-2025-1088', journal: 'Nature', title: 'Deep learning for protein folding', subStatus: 'Reject', reviewers: '2 / 2', comments: 2, revision: 'R0', status: 'Reject', stage: '归档' },
+  { id: 'MS-2025-1045', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Retraction', reviewers: '1 / 3', comments: 0, revision: 'R1', status: 'Accepted', stage: '归档' },
+  { id: 'MS-2025-1200', journal: 'BMJ', title: 'AI-based early cancer detection in clinical settings', subStatus: 'Corrected', reviewers: '2 / 3', comments: 1, revision: 'R2', status: 'Accept', stage: '归档' },
 
-  // 出版后处理 (Post-Publication)
-  { id: 'MS-2024-0120', journal: 'Lancet', title: 'Adverse effects reports on new drug', subStatus: 'Pending ME Decision', reviewers: '- / -', comments: '-', revision: 'R0', status: 'ME Decision', stage: '出版后处理', unreadComments: 1, unreadType: '稿件消息' },
-  { id: 'MS-2024-0345', journal: 'Nature', title: 'Correction on CRISPR data', subStatus: 'Pending Correction Publication', reviewers: '- / -', comments: '-', revision: 'R0', status: 'Correction', stage: '出版后处理' },
-  { id: 'MS-2024-0412', journal: 'Science', title: 'Update on quantum computing benchmark', subStatus: 'Pending EIC Decision', reviewers: '- / -', comments: '-', revision: 'R0', status: 'EIC Decision', stage: '出版后处理' }
+  // 后处理 (Post-Publication)
+  { id: 'MS-2024-0120', journal: 'Lancet', title: 'Adverse effects reports on new drug', subStatus: 'Corrected', reviewers: '- / -', comments: '-', revision: 'R0', status: 'Accepted', stage: '后处理', unreadComments: 1, unreadType: '稿件消息' },
+  { id: 'MS-2024-0345', journal: 'Nature', title: 'Correction on CRISPR data', subStatus: 'Retraction', reviewers: '- / -', comments: '-', revision: 'R0', status: 'Accepted', stage: '后处理' },
 ];
 
 const auMockData: Manuscript[] = [
@@ -74,14 +73,14 @@ const auMockData: Manuscript[] = [
   { id: 'MS-2026-0058', journal: 'Lancet', title: 'New treatment for XYZ', subStatus: 'Pending Editor Decision', reviewers: '5 / 20', comments: 3, revision: 'R2', status: 'ME Pre-Acceptance', stage: '同行评议' },
 
   // 归档 (Archiving)
-  { id: 'MS-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: '已接收', reviewers: '3 / 3', comments: 3, revision: 'R3', status: 'Accept', stage: '归档' },
-  { id: 'MS-2025-1088', journal: 'Nature', title: 'Deep learning for protein folding', subStatus: '已拒稿', reviewers: '2 / 2', comments: 2, revision: 'R0', status: 'Reject', stage: '归档' },
-  { id: 'MS-2025-1045', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: '已撤稿', reviewers: '1 / 3', comments: 0, revision: 'R1', status: 'Retraction', stage: '归档' },
-  { id: 'MS-2025-0991', journal: 'Lancet', title: 'Global burden of cardiovascular diseases', subStatus: '已出版', reviewers: '4 / 4', comments: 5, revision: 'R2', status: 'Accept', stage: '归档' },
+  { id: 'MS-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Accept', reviewers: '3 / 3', comments: 3, revision: 'R3', status: 'Accept', stage: '归档' },
+  { id: 'MS-2025-1088', journal: 'Nature', title: 'Deep learning for protein folding', subStatus: 'Reject', reviewers: '2 / 2', comments: 2, revision: 'R0', status: 'Reject', stage: '归档' },
+  { id: 'MS-2025-1045', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Retraction', reviewers: '1 / 3', comments: 0, revision: 'R1', status: 'Retraction', stage: '归档' },
+  { id: 'MS-2025-0991', journal: 'Lancet', title: 'Global burden of cardiovascular diseases', subStatus: 'Accept', reviewers: '4 / 4', comments: 5, revision: 'R2', status: 'Accept', stage: '归档' },
 
-  // 出版后处理 (Post-Publication)
-  { id: 'MS-2024-0120', journal: 'Lancet', title: 'Adverse effects reports on new drug', subStatus: 'Pending Editor Decision', reviewers: '5 / 20', comments: 3, revision: 'R0', status: 'Editor Decision', stage: '出版后处理' },
-  { id: 'MS-2024-0345', journal: 'Nature', title: 'Correction on CRISPR data', subStatus: 'Send Back to Author(s)', reviewers: '5 / 20', comments: '3 / 5', revision: 'R0', status: 'Author(s) Revise', stage: '出版后处理', unreadComments: 1, unreadType: '编辑部消息' }
+  // 后处理 (Post-Publication)
+  { id: 'MS-2024-0120', journal: 'Lancet', title: 'Adverse effects reports on new drug', subStatus: 'Corrected', reviewers: '5 / 20', comments: 3, revision: 'R0', status: 'Accept', stage: '后处理' },
+  { id: 'MS-2024-0345', journal: 'Nature', title: 'Correction on CRISPR data', subStatus: 'Retraction', reviewers: '5 / 20', comments: '3 / 5', revision: 'R0', status: 'Accept', stage: '后处理', unreadComments: 1, unreadType: '编辑部消息' }
 ];
 
 const reMockData: Manuscript[] = [
@@ -99,8 +98,8 @@ const reMockData: Manuscript[] = [
 const meTabs: { name: Stage; count: number }[] = [
   { name: '初审', count: 12 },
   { name: '同行评议', count: 45 },
-  { name: '出版后处理', count: 3 },
   { name: '归档', count: 128 },
+  { name: '后处理', count: 3 },
 ];
 
 const reTabs: { name: Stage; count: number }[] = [
@@ -111,7 +110,6 @@ const reTabs: { name: Stage; count: number }[] = [
 const auTabs: { name: Stage; count: number }[] = [
   { name: '初审', count: 12 },
   { name: '同行评议', count: 45 },
-  { name: '出版后处理', count: 3 },
   { name: '归档', count: 128 },
 ];
 
@@ -218,7 +216,7 @@ export default function App() {
     if (role !== 'LIST') {
       setShowSimpleList(false);
     }
-    if (role === 'RE' && (activeTab === '初审' || activeTab === '出版后处理')) {
+    if (role === 'RE' && (activeTab === '初审' || activeTab === '后处理')) {
       setActiveTab('同行评议');
     }
   };
@@ -456,7 +454,7 @@ export default function App() {
                  '初审': '正在初步审查中',
                  '同行评议': '专家正在评审',
                  '归档': '流程已结束',
-                 '出版后处理': '出版后续处理',
+                 '后处理': '出版后续处理',
                };
 
                return (
@@ -487,7 +485,7 @@ export default function App() {
 
                    {/* ===== 阶段标签（大号） ===== */}
                    <div className="flex gap-3 flex-wrap">
-                     {(['初审', '同行评议', '归档', '出版后处理'] as Stage[]).map(stage => {
+                     {(['初审', '同行评议', '归档', '后处理'] as Stage[]).map(stage => {
                        const count = meMockData.filter(m => m.stage === stage).length;
                        const isActive = activeTab === stage;
                        const todoCount = meMockData.filter(m => m.stage === stage && isTodo(m, 'ME')).length;

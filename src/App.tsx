@@ -52,7 +52,7 @@ const meMockData: Manuscript[] = [
   { id: 'MS-2025-1102', journal: 'Science', title: 'Graphene superconductors at room temp', subStatus: 'Accepted', reviewers: '3 / 3', comments: 3, revision: 'R3', status: 'Accepted', stage: '归档' },
   { id: 'MS-2025-1088', journal: 'Nature', title: 'Deep learning for protein folding', subStatus: 'Reject', reviewers: '2 / 2', comments: 2, revision: 'R0', status: 'Reject', stage: '归档' },
   { id: 'MS-2025-1045', journal: 'Cell', title: 'Microbiome influence on cognitive decline', subStatus: 'Retraction', reviewers: '1 / 3', comments: 0, revision: 'R1', status: 'Accepted', stage: '归档' },
-  { id: 'MS-2025-1200', journal: 'BMJ', title: 'AI-based early cancer detection in clinical settings', subStatus: 'Corrected', reviewers: '2 / 3', comments: 1, revision: 'R2', status: 'Accept', stage: '归档' },
+  { id: 'MS-2025-1200', journal: 'BMJ', title: 'AI-based early cancer detection in clinical settings', subStatus: 'Corrected', reviewers: '2 / 3', comments: 1, revision: 'R2', status: 'Accepted', stage: '归档' },
 
   // 后处理 (Post-Publication)
   { id: 'MS-2024-0120', journal: 'Lancet', title: 'Adverse effects reports on new drug', subStatus: 'Corrected', reviewers: '- / -', comments: '-', revision: 'R0', status: 'Accepted', stage: '后处理', unreadComments: 1, unreadType: '稿件消息' },

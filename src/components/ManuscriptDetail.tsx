@@ -18,7 +18,8 @@ import {
   ChevronDown,
   History,
   Send,
-  AlertCircle
+  AlertCircle,
+  Check
 } from 'lucide-react';
 import ModifyWorkflowModal from './ModifyWorkflowModal';
 
@@ -95,6 +96,43 @@ export default function ManuscriptDetail({ onBack }: ManuscriptDetailProps) {
         {/* Main Content Area */}
         <div className="xl:col-span-3 space-y-6">
           
+          {/* Workflow Stepper */}
+          <div className="bg-white border border-[#e2e8f0] rounded-xl shadow-sm p-5 relative overflow-hidden">
+            <div className="flex items-center justify-between relative z-10">
+              {[
+                { id: 1, label: 'Submission', desc: '稿件提交', status: 'completed' },
+                { id: 2, label: 'Initial Check', desc: '初审', status: 'current' },
+                { id: 3, label: 'Peer Review', desc: '同行评议', status: 'pending' },
+                { id: 4, label: 'Archived', desc: '归档', status: 'pending' },
+              ].map((step, index, arr) => (
+                <div key={step.id} className="flex flex-col items-center flex-1 relative group">
+                  {/* Progress Line */}
+                  {index < arr.length - 1 && (
+                    <div className={`absolute top-[14px] left-[50%] w-full h-[2px] ${
+                      step.status === 'completed' ? 'bg-[#22c55e]' : 'bg-[#e2e8f0]'
+                    }`}></div>
+                  )}
+                  {/* Step Circle */}
+                  <div className={`relative flex items-center justify-center w-7 h-7 rounded-full text-[13px] font-bold border-2 bg-white z-10 transition-colors
+                    ${step.status === 'completed' ? 'border-[#22c55e] text-[#22c55e]' : 
+                      step.status === 'current' ? 'border-[#2563eb] text-[#2563eb] ring-4 ring-[#eff6ff]' : 
+                      'border-[#e2e8f0] text-[#94a3b8]'}`}>
+                    {step.status === 'completed' ? <Check size={14} strokeWidth={3} /> : step.id}
+                  </div>
+                  {/* Step Text */}
+                  <div className="mt-3 text-center">
+                    <div className={`text-[13px] font-bold ${step.status === 'pending' ? 'text-[#94a3b8]' : 'text-[#1e293b]'}`}>
+                      {step.label}
+                    </div>
+                    <div className={`text-[12px] mt-0.5 ${step.status === 'pending' ? 'text-[#cbd5e1]' : 'text-[#64748b]'}`}>
+                      {step.desc}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Tabs Navigation */}
           <div className="bg-white border text-[#334155] border-[#e2e8f0] rounded-xl shadow-sm overflow-hidden flex items-center justify-between px-2">
              <div className="flex overflow-x-auto no-scrollbar">

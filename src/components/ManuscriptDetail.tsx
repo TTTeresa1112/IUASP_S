@@ -37,7 +37,7 @@ export default function ManuscriptDetail({ onBack }: ManuscriptDetailProps) {
     { id: 'Basic Information', label: 'Basic Information', icon: FileText },
     { id: 'Manuscript Details', label: 'Manuscript Details', icon: File },
     { id: 'Reviewer Comments', label: 'Reviewer Comments', icon: MessageSquare },
-    { id: 'Correspondence History', label: 'Correspondence History', icon: History }
+    { id: 'History', label: 'History', icon: History }
   ];
 
   return (
@@ -320,7 +320,7 @@ export default function ManuscriptDetail({ onBack }: ManuscriptDetailProps) {
           )}
 
           {/* 4. 通信记录 */}
-          {activeTab === 'Correspondence History' && (
+          {activeTab === 'History' && (
           <section className="bg-white border text-[#334155] border-[#e2e8f0] rounded-xl shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-300">
             <div className="p-6">
                <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#e2e8f0] before:to-transparent">
@@ -402,7 +402,7 @@ export default function ManuscriptDetail({ onBack }: ManuscriptDetailProps) {
              <div className="flex items-start gap-3 text-[#0369a1]">
                 <Settings className="mt-0.5 shrink-0" size={18} />
                 <div>
-                  <h4 className="font-bold text-[14px] mb-1">Workflow Note</h4>
+                  <h4 className="font-bold text-[14px] mb-1">Note</h4>
                   <p className="text-[13px] opacity-90 leading-relaxed">
                     This manuscript is pending your initial check. Make sure the basic requirements are met before assigning it to an Editor-in-Chief.
                   </p>
